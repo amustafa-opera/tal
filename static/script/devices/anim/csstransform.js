@@ -27,7 +27,6 @@ define(
                 var x = 0;
                 var y = 0;
 
-
                 if (options.to.left !== undefined) {
                     x = options.to.left;
                 }
@@ -44,9 +43,8 @@ define(
                     options.onComplete(evt);
                   }
                 }
-                
+
                 options.el.style.transform = transform;
-                var t = options.el.offsetLeft;
                 if (options.onComplete) {
                     options.onComplete();
                   }
@@ -80,8 +78,10 @@ define(
                 }
                 options.el.addEventListener("transitionend", handler);
                 options.el.style.transform = transform;
-                options.el.style.transition = "transform " + options.duration + "ms";
-                return;
+                var transition = "transform " + options.duration + "ms linear";
+                if (options.el.style.transition != transition)
+                  options.el.style.transition = transition;
+                return options;
             }
         }
         /* documented in antie.devices.Device */
@@ -285,7 +285,7 @@ define(
 
         /* documented in antie.devices.Device */
         Device.prototype.stopAnimation = function(anim) {
-            anim.stop(true);
+            anim.onComplete();
         };
 
         /* documented in antie.devices.Device */
